@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    <meta charset="utf-8">
+    <title>Hospitality Management — Global Investments AG</title>
+    <link rel="icon" href="https://globalinvestmentsagch.com/img/iconoC1.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zain:wght@300;400;700;800;900&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --primary: #DA9F5B;
+            --dark:    #33211D;
+            --light:   #F5EFE6;
+            --light-rgb: 245, 239, 230;
+            --border:  #E0D6CC;
+            --muted:   #7A6A65;
+            --surface: #ffffff;
+        }
+        html.dark {
+            --dark:    #F5EFE6;
+            --light:   #1A110F;
+            --light-rgb: 26, 17, 15;
+            --border:  #3F2C26;
+            --muted:   #A59792;
+            --surface: #261A17;
+        }
+        html.dark .navbar-brand img, html.dark .logo img, html.dark .brand img { filter: brightness(0) invert(1); }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Nunito', sans-serif; background: var(--light); color: var(--dark); transition: background .3s, color .3s; }
+
+        /* ── TOP NAV ── */
+        header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(var(--light-rgb),.85);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+        }
+        .header-inner {
+            max-width: 1200px; margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex; align-items: center; justify-content: space-between; gap: 16px;
+        }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo img { height: 42px; }
+        .logo-text { font-family: serif; font-weight: 700; font-size: 1.05rem; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.1; margin-top: 4px; }
+        nav { display: flex; align-items: center; gap: 4px; }
+        nav a {
+            font-size: .85rem; font-weight: 600; color: var(--dark);
+            text-decoration: none; padding: 6px 14px; border-radius: 50px;
+            transition: background .2s, color .2s;
+        }
+        nav a:hover, nav a.active { background: rgba(218,159,91,.15); color: var(--primary); }
+        .btn-portal {
+            background: var(--primary); color: #fff; border: none;
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; font-size: .9rem; transition: background .2s;
+        }
+        .btn-portal:hover { background: var(--dark); color: #fff; }
+        .burger { display: none; background: none; border: none; cursor: pointer; padding: 6px; color: var(--dark); }
+        .mobile-nav { display: none; flex-direction: column; background: rgba(var(--light-rgb),.97); border-bottom: 1px solid var(--border); padding: 12px 24px; gap: 4px; }
+        .mobile-nav a { font-size: .9rem; font-weight: 600; color: var(--dark); text-decoration: none; padding: 9px 12px; border-radius: 10px; }
+        .mobile-nav a:hover { background: rgba(218,159,91,.12); color: var(--primary); }
+        @media (max-width: 860px) { nav { display: none; } .burger { display: block; } }
+
+        /* ── HERO BAND ── */
+        .hero-band {
+            position: relative;
+            background: url('Assets/pexels-timo-volz-837240-21348367.jpg') center/cover no-repeat;
+            padding: 100px 24px 80px;
+            text-align: center;
+            z-index: 1;
+        }
+        .hero-band::before {
+            content: ''; position: absolute; inset: 0; z-index: -1;
+            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.65) 100%);
+        }
+        .hero-band .eyebrow {
+            display: inline-block;
+            background: rgba(218,159,91,.2);
+            color: var(--primary);
+            border-radius: 50px; padding: 4px 18px;
+            font-size: .8rem; font-weight: 700; letter-spacing: 1.5px;
+            text-transform: uppercase; margin-bottom: 20px;
+        }
+        .hero-band h1 {
+            font-family: 'Zain', sans-serif; font-weight: 900;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            color: #fff; letter-spacing: -.5px; line-height: 1.15;
+            margin-bottom: 16px;
+        }
+        .hero-band p {
+            max-width: 620px; margin: 0 auto;
+            color: rgba(255,255,255,.65); font-size: 1.05rem; line-height: 1.7;
+        }
+
+        /* ── DIVIDER TAG ── */
+        .section-divider {
+            max-width: 1200px; margin: 48px auto 0; padding: 0 24px;
+            display: flex; align-items: center; gap: 16px;
+        }
+        .section-divider h2 {
+            font-family: 'Zain', sans-serif; font-weight: 800; font-size: 1.3rem;
+            white-space: nowrap; color: var(--dark);
+        }
+        .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        /* ── FEATURED CARD ── */
+        .featured-wrap { max-width: 1200px; margin: 28px auto 0; padding: 0 24px; }
+        .featured-card {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+            background: var(--surface); border-radius: 14px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 24px rgba(51,33,29,.08);
+            overflow: hidden;
+            transition: box-shadow .3s, transform .3s;
+        }
+        .featured-card:hover { box-shadow: 0 12px 40px rgba(51,33,29,.14); transform: translateY(-3px); }
+        .featured-card .fc-img {
+            width: 100%; height: 100%; min-height: 280px;
+            object-fit: cover; display: block;
+            background: #d5c9be;
+        }
+        .featured-card .fc-body { padding: 40px 36px; display: flex; flex-direction: column; justify-content: center; }
+        .tag {
+            display: inline-block;
+            font-size: .72rem; font-weight: 700; letter-spacing: 1.2px;
+            text-transform: uppercase; color: var(--primary);
+            background: rgba(218,159,91,.12); border-radius: 50px;
+            padding: 3px 12px; margin-bottom: 14px;
+        }
+        .featured-card h3 {
+            font-family: 'Zain', sans-serif; font-weight: 800;
+            font-size: 1.7rem; line-height: 1.25; margin-bottom: 14px; color: var(--dark);
+        }
+        .featured-card p { color: var(--muted); line-height: 1.75; font-size: .95rem; }
+        .read-more {
+            margin-top: 24px; display: inline-flex; align-items: center; gap: 6px;
+            font-weight: 700; font-size: .875rem; color: var(--primary);
+            text-decoration: none; transition: gap .2s;
+        }
+        .read-more:hover { gap: 10px; }
+        @media (max-width: 700px) {
+            .featured-card { grid-template-columns: 1fr; }
+            .featured-card .fc-img { min-height: 200px; }
+            .featured-card .fc-body { padding: 24px; }
+        }
+
+        /* ── CARD GRID ── */
+        .grid-wrap { max-width: 1200px; margin: 36px auto 64px; padding: 0 24px; }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        @media (max-width: 900px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 560px) { .card-grid { grid-template-columns: 1fr; } }
+
+        .service-card {
+            background: var(--surface); border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 10px rgba(51,33,29,.06);
+            overflow: hidden;
+            display: flex; flex-direction: column;
+            transition: box-shadow .3s, transform .3s;
+        }
+        .service-card:hover { box-shadow: 0 10px 32px rgba(51,33,29,.13); transform: translateY(-4px); }
+        .service-card .card-img-wrap {
+            height: 160px; overflow: hidden;
+            background: #e8ddd4;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .service-card .card-img-wrap img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform .4s;
+        }
+        .service-card:hover .card-img-wrap img { transform: scale(1.05); }
+        .service-card .card-body { padding: 22px 22px 24px; flex: 1; display: flex; flex-direction: column; }
+        .service-card h4 {
+            font-family: 'Zain', sans-serif; font-weight: 800; font-size: 1.1rem;
+            color: var(--dark); margin-bottom: 10px; line-height: 1.3;
+        }
+        .service-card p { color: var(--muted); font-size: .875rem; line-height: 1.7; flex: 1; }
+        .card-link {
+            margin-top: 16px; display: inline-flex; align-items: center; gap: 5px;
+            font-size: .82rem; font-weight: 700; color: var(--primary);
+            text-decoration: none; transition: gap .2s;
+        }
+        .card-link:hover { gap: 9px; }
+
+        /* ── FOOTER ── */
+        footer {
+            background: url('Assets/Background_footer.jpg') center/cover no-repeat;
+            position: relative;
+            padding: 70px 0 0;
+            text-align: center;
+        }
+        footer::before { content: ''; position: absolute; inset: 0; background: rgba(30,15,10,.8); }
+        .footer-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column; align-items: center; }
+        footer h4 { font-family: 'Zain', sans-serif; font-weight: 700; color: #fff; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; }
+        .footer-logo { display: inline-block; margin-bottom: 24px; transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .footer-logo:hover { transform: scale(1.08); }
+        .footer-logo img { max-width: 110px; height: auto; }
+        footer p { color: rgba(255,255,255,.8); font-size: 1rem; margin-bottom: 8px; }
+        footer p i { color: var(--primary); margin-right: 8px; }
+        footer a { color: var(--primary); text-decoration: none; }
+        .footer-quote {
+            width: 100%;
+            border-top: 1px solid rgba(255,255,255,.12);
+            padding: 24px 0;
+            margin-top: 40px;
+            color: rgba(255,255,255,.6);
+            font-style: italic;
+            letter-spacing: 1px;
+            font-size: .85rem;
+            text-align: center;
+        }
+        .footer-bottom {
+            width: 100%;
+            border-top: 1px solid rgba(255,255,255,.1);
+            padding: 16px 0 24px;
+            text-align: center;
+            color: rgba(255,255,255,.5);
+            font-size: .85rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+    <div class="header-inner">
+        <a class="logo" href="index.html">
+            <img src="https://globalinvestmentsagch.com/img/iconoC1.png" alt="Global Investments AG">
+            <div class="logo-text">Global Investments AG</div>
+        </a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="service.html">Service</a>
+            <a href="hospitality.html" class="active">Hospitality Management</a>
+            <a href="index.html#testimonial">Testimonial</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div style="display:flex;align-items:center;gap:8px;">
+            <button class="btn-portal" id="themeToggleHosp" aria-label="Toggle theme">
+                <svg id="themeIconHosp" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+            <a href="signin.html" class="btn-portal" title="Client Portal">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </a>
+            <button class="burger" id="burger" aria-label="Menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+        </div>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="service.html">Service</a>
+        <a href="hospitality.html">Hospitality Management</a>
+        <a href="index.html#testimonial">Testimonial</a>
+        <a href="contact.html">Contact</a>
+    </div>
+</header>
+
+<!-- ═══ HERO BAND ═══ -->
+<div class="hero-band">
+    <span class="eyebrow">Our Expertise</span>
+    <h1>Hospitality Management</h1>
+    <p>Global Investments AG delivers comprehensive hospitality solutions — from revenue optimization and guest retention to IT infrastructure and human resources — transforming resort investments into solvent, sustainable programs.</p>
+</div>
+
+<!-- ═══ FEATURED: Revenue Management ═══ -->
+<div class="section-divider"><h2>Featured Service</h2></div>
+<div class="featured-wrap">
+    <div class="featured-card">
+        <img class="fc-img"
+             src="https://globalinvestmentsagch.com/img/revenue.png"
+             onerror="this.style.background='#d5c9be'"
+             alt="Revenue Management">
+        <div class="fc-body">
+            <span class="tag">Strategy</span>
+            <h3>Revenue Management</h3>
+            <p>We maximize revenue by analyzing market trends and identifying yield opportunities, implementing dynamic pricing and distribution strategies that keep your property ahead of the competition while ensuring sustainable long-term profitability.</p>
+
+        </div>
+    </div>
+</div>
+
+<!-- ═══ ALL SERVICES GRID ═══ -->
+<div class="section-divider" id="all-services"><h2>All Services</h2></div>
+<div class="grid-wrap">
+    <div class="card-grid">
+
+        <!-- 1 Increasing Profits -->
+        <div class="service-card">
+            <div class="card-img-wrap">
+                <img src="https://globalinvestmentsagch.com/img/increase.png" alt="Increasing Profits">
+            </div>
+            <div class="card-body">
+                <span class="tag">Revenue</span>
+                <h4>Increasing Profits</h4>
+                <p>We expand revenue streams by offering curated add-on services — airport transfers, spa treatments, and exclusive experiences — turning every guest touchpoint into an incremental profit opportunity.</p>
+
+            </div>
+        </div>
+
+        <!-- 2 Guest Retention -->
+        <div class="service-card">
+            <div class="card-img-wrap">
+                <img src="https://globalinvestmentsagch.com/img/guest.png" alt="Guest Retention">
+            </div>
+            <div class="card-body">
+                <span class="tag">Guest Experience</span>
+                <h4>Guest Retention</h4>
+                <p>A robust direct booking system bolsters loyalty and communication with guests, reducing reliance on third-party channels and strengthening long-term relationships that drive repeat stays.</p>
+
+            </div>
+        </div>
+
+        <!-- 3 Ownership Representation -->
+        <div class="service-card">
+            <div class="card-img-wrap">
+                <img src="https://globalinvestmentsagch.com/img/owners.png" alt="Ownership Representation">
+            </div>
+            <div class="card-body">
+                <span class="tag">Ownership</span>
+                <h4>Ownership Representation</h4>
+                <p>We serve as the strategic liaison between the owner, the property, and the community — advocating for ownership interests while facilitating development, compliance, and long-term planning.</p>
+
+            </div>
+        </div>
+
+        <!-- 4 Sales and Marketing -->
+        <div class="service-card">
+            <div class="card-img-wrap">
+                <img src="https://globalinvestmentsagch.com/img/sales.png" alt="Sales and Marketing">
+            </div>
+            <div class="card-body">
+                <span class="tag">Marketing</span>
+                <h4>Sales and Marketing</h4>
+                <p>An industry leader in hospitality innovation, recognized with the Davey Award in 2018. Our marketing strategies combine data-driven campaigns with creative storytelling to fill rooms and grow brand equity.</p>
+
+            </div>
+        </div>
+
+        <!-- 5 Daily Operations -->
+        <div class="service-card">
+            <div class="card-img-wrap">
+                <img src="https://globalinvestmentsagch.com/img/guide.png" alt="Daily Operations">
+            </div>
+            <div class="card-body">
+                <span class="tag">Operations</span>
+                <h4>Daily Operations</h4>
+                <p>We oversee rate structures, cost controls, payroll, and guest satisfaction metrics day-to-day — ensuring every department runs at peak efficiency and every guest leaves with a positive impression.</p>
+
+            </div>
+        </div>
+
+        <!-- 6 IT Services -->
+        <div class="service-card">
+            <div class="card-img-wrap">
+                <img src="https://globalinvestmentsagch.com/img/IT.png" alt="IT Services">
+            </div>
+            <div class="card-body">
+                <span class="tag">Technology</span>
+                <h4>IT Services</h4>
+                <p>Full LAN management, secure wireless infrastructure, and PCI compliance protocols — keeping your property's technology stack reliable, secure, and aligned with the latest hospitality industry standards.</p>
+
+            </div>
+        </div>
+
+        <!-- 7 Hospitality Management -->
+        <div class="service-card">
+            <div class="card-img-wrap">
+                <img src="https://globalinvestmentsagch.com/img/hospitality.png" alt="Hospitality Management">
+            </div>
+            <div class="card-body">
+                <span class="tag">Management</span>
+                <h4>Hospitality Management</h4>
+                <p>High-level involvement in daily activities and long-term strategic plans ensures alignment between operational execution and ownership objectives, producing consistent, measurable results.</p>
+
+            </div>
+        </div>
+
+        <!-- 8 Human Resources -->
+        <div class="service-card">
+            <div class="card-img-wrap">
+                <img src="https://globalinvestmentsagch.com/img/HR.png" alt="Human Resources">
+            </div>
+            <div class="card-body">
+                <span class="tag">HR</span>
+                <h4>Human Resources</h4>
+                <p>Committed to equal opportunity and continuous employee development, our HR programs attract, train, and retain top-tier hospitality talent — building teams that deliver exceptional service every day.</p>
+
+            </div>
+        </div>
+
+        <!-- 9 Booking Engine -->
+        <div class="service-card">
+            <div class="card-img-wrap">
+                <img src="https://globalinvestmentsagch.com/img/hotelier.png" alt="Booking Engine">
+            </div>
+            <div class="card-body">
+                <span class="tag">Technology</span>
+                <h4>Booking Engine</h4>
+                <p>A user-friendly, mobile-optimized booking engine with secure payment processing that reduces friction in the reservation journey, maximizing direct bookings and eliminating unnecessary OTA commissions.</p>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+    <div class="footer-inner">
+        <h4>GET IN TOUCH</h4>
+        <a href="index.html#home" class="footer-logo">
+            <img src="https://globalinvestmentsagch.com/img/capital11.png" alt="Global Investments AG">
+        </a>
+        <p>CONTACT US</p>
+        <p><i class="fa fa-envelope"></i> contactus@globalinvestments-ag.com</p>
+
+        <div class="footer-quote">
+            "GLOBAL INVESTMENTS AG TRANSFORMS YOUR CURRENT RESORT INVESTMENT OR TRAVEL CLUB OWNERSHIP INTO A SOLVENT AND SUSTAINABLE PROGRAM."
+        </div>
+        <div class="footer-bottom">
+            Copyright &copy; <a href="index.html">Domain</a>. All Rights Reserved. &nbsp;|&nbsp; Designed by <a href="index.html">Global Investments AG</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const burger   = document.getElementById('burger');
+    const mobileNav = document.getElementById('mobileNav');
+    burger.addEventListener('click', () => {
+        const open = mobileNav.style.display === 'flex';
+        mobileNav.style.display = open ? 'none' : 'flex';
+    });
+
+    const themeToggleBtn = document.getElementById('themeToggleHosp');
+    const themeIconSvg = document.getElementById('themeIconHosp');
+    const iconMoon = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+    const iconSun = `<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>`;
+    
+    if (document.documentElement.classList.contains('dark')) {
+        themeIconSvg.innerHTML = iconSun;
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        const isDark = document.documentElement.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        themeIconSvg.innerHTML = isDark ? iconSun : iconMoon;
+    });
+</script>
+</body>
+</html>

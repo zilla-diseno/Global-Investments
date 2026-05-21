@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    <meta charset="utf-8">
+    <title>Sign In — Global Investments AG</title>
+    <link rel="icon" href="https://globalinvestmentsagch.com/img/iconoC1.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign in to your Global Investments AG client portal.">
+
+    <!-- Google Fonts: Zain + Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zain:wght@300;400;700;800;900&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --primary:  #DA9F5B;
+            --dark:     #33211D;
+            --light:    #F5EFE6;
+            --surface:  #ffffff;
+            --border:   #E0D6CC;
+            --muted:    #7A6A65;
+            --error:    #d32f2f;
+        }
+
+        html.dark {
+            --dark:    #F5EFE6;
+            --light:   #1A110F;
+            --surface: #261A17;
+            --border:  #3F2C26;
+            --muted:   #A59792;
+            --error:   #ef5350;
+        }
+        html.dark .navbar-brand img, html.dark .logo img, html.dark .brand img { filter: brightness(0) invert(1); }
+
+        html, body {
+            height: 100%;
+            font-family: 'Nunito', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            transition: background .3s, color .3s;
+        }
+
+        /* ── Subtle noise / gradient background ── */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(218,159,91,.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 80%, rgba(51,33,29,.08) 0%, transparent 55%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Page shell ── */
+        .page-wrap {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
+            gap: 16px;
+        }
+
+        /* ── Card ── */
+        .card {
+            background: var(--surface);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow:
+                0 2px 8px rgba(51,33,29,.06),
+                0 12px 40px rgba(51,33,29,.10);
+            padding: 40px 40px 36px;
+            width: 100%;
+            max-width: 440px;
+        }
+
+        /* ── Logo ── */
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .brand img {
+            height: 42px;
+            width: auto;
+        }
+        .brand-name {
+            font-family: serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--primary);
+            line-height: 1.1;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+            margin-top: 4px;
+            text-align: left;
+        }
+
+        /* ── Heading ── */
+        h1 {
+            font-family: 'Zain', sans-serif;
+            font-weight: 800;
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 28px;
+            letter-spacing: -.3px;
+        }
+
+        /* ── Form fields ── */
+        .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+
+        label {
+            font-size: .825rem;
+            font-weight: 600;
+            color: var(--dark);
+            letter-spacing: .2px;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: .95rem;
+            color: var(--dark);
+            background: var(--surface);
+            transition: border-color .2s, box-shadow .2s;
+            outline: none;
+        }
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(218,159,91,.18);
+            background: var(--surface);
+        }
+        input::placeholder { color: #b0a099; }
+
+        /* password wrapper */
+        .password-wrap { position: relative; }
+        .toggle-pw {
+            position: absolute; right: 12px; top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none; cursor: pointer;
+            color: var(--muted); font-size: 1rem; padding: 2px;
+            line-height: 1;
+        }
+        .toggle-pw:hover { color: var(--primary); }
+
+        /* ── Remember me + forgot ── */
+        .row-between {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        .checkbox-label {
+            display: flex; align-items: center; gap: 8px;
+            font-size: .875rem; color: var(--dark); cursor: pointer;
+        }
+        input[type="checkbox"] {
+            width: 16px; height: 16px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+        .link {
+            font-size: .875rem;
+            font-weight: 600;
+            color: var(--dark);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+            background: none; border: none;
+        }
+        .link:hover { color: var(--primary); }
+
+        /* ── Primary button ── */
+        .btn-primary {
+            width: 100%;
+            padding: 13px;
+            background: var(--dark);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: .975rem;
+            font-weight: 700;
+            letter-spacing: .3px;
+            cursor: pointer;
+            transition: background .2s, transform .15s, box-shadow .2s;
+            margin-bottom: 20px;
+        }
+        .btn-primary:hover {
+            background: var(--primary);
+            box-shadow: 0 4px 16px rgba(218,159,91,.35);
+            transform: translateY(-1px);
+        }
+        .btn-primary:active { transform: translateY(0); }
+
+        /* ── Forgot password (centered, above divider) ── */
+        .forgot-wrap {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* ── Divider ── */
+        .divider {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 20px;
+        }
+        .divider::before, .divider::after {
+            content: ''; flex: 1;
+            height: 1px; background: var(--border);
+        }
+        .divider span {
+            font-size: .8rem; color: var(--muted);
+            font-weight: 500; white-space: nowrap;
+        }
+
+        /* ── Social buttons ── */
+        .btn-social {
+            width: 100%;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 11px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface);
+            font-family: 'Nunito', sans-serif;
+            font-size: .9rem;
+            font-weight: 600;
+            color: var(--dark);
+            cursor: pointer;
+            transition: border-color .2s, box-shadow .2s, background .2s;
+            margin-bottom: 12px;
+            text-decoration: none;
+        }
+        .btn-social:last-of-type { margin-bottom: 0; }
+        .btn-social:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(218,159,91,.15);
+            background: var(--light);
+        }
+        .btn-social svg { flex-shrink: 0; }
+
+        /* ── Sign up link ── */
+        .signup-row {
+            text-align: center;
+            margin-top: 24px;
+            font-size: .9rem;
+            color: var(--muted);
+        }
+        .signup-row a {
+            color: var(--dark);
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .signup-row a:hover { color: var(--primary); }
+
+        /* ── Top Nav ── */
+        .top-nav {
+            width: 100%; max-width: 440px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .back-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: .875rem; font-weight: 600;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .back-link:hover { color: var(--primary); }
+        
+        .btn-theme-plain {
+            background: none; border: none; cursor: pointer; color: var(--muted); padding: 4px; transition: color .2s;
+        }
+        .btn-theme-plain:hover { color: var(--primary); }
+
+        /* ── Footer ── */
+        footer {
+            position: relative; z-index: 1;
+            text-align: center;
+            padding: 16px;
+            font-size: .78rem;
+            color: var(--muted);
+        }
+        footer a { color: var(--primary); text-decoration: none; }
+
+        /* ── Error message ── */
+        .field-error {
+            font-size: .78rem;
+            color: var(--error);
+            display: none;
+        }
+        input.invalid { border-color: var(--error); }
+        input.invalid:focus { box-shadow: 0 0 0 3px rgba(211,47,47,.15); }
+
+        @media (max-width: 480px) {
+            .card { padding: 28px 20px 24px; }
+            h1 { font-size: 1.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+    <div class="top-nav">
+        <!-- Back to site -->
+        <a class="back-link" href="index.html">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            Back to site
+        </a>
+        <button class="btn-theme-plain" id="themeToggleSignin" aria-label="Toggle theme">
+            <svg id="themeIconSignin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Card -->
+    <div class="card">
+
+        <!-- Brand -->
+        <div class="brand">
+            <img src="https://globalinvestmentsagch.com/img/iconoC1.png" alt="Global Investments AG">
+            <div class="brand-name">
+                Global Investments AG
+            </div>
+        </div>
+
+        <span style="display:inline-block; font-size: .75rem; font-weight: 700; color: var(--primary); background: rgba(218,159,91,.12); padding: 4px 14px; border-radius: 50px; margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase;">Client Portal</span>
+        <h1 style="margin-top: 4px;">Sign in</h1>
+
+        <form id="signinForm" novalidate>
+
+            <!-- Email -->
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email"
+                       placeholder="your@email.com" autocomplete="email" required>
+                <span class="field-error" id="emailError">Please enter a valid email address.</span>
+            </div>
+
+            <!-- Password -->
+            <div class="field">
+                <label for="password">Password</label>
+                <div class="password-wrap">
+                    <input type="password" id="password" name="password"
+                           placeholder="••••••••" autocomplete="current-password" required>
+                    <button type="button" class="toggle-pw" id="togglePw" aria-label="Toggle password visibility">
+                        <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+                <span class="field-error" id="passwordError">Password is required.</span>
+            </div>
+
+            <!-- Remember me + Forgot -->
+            <div class="row-between">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="remember" name="remember">
+                    Remember me
+                </label>
+                <button type="button" class="link">Forgot your password?</button>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn-primary" id="submitBtn">Sign in</button>
+
+        </form>
+
+        <!-- Forgot (centered) -->
+        <div class="forgot-wrap">
+            <!-- intentionally empty — moved inline above -->
+        </div>
+
+
+
+        <!-- Sign up row -->
+        <div class="signup-row">
+            Don't have an account? <a href="#">Sign up</a>
+        </div>
+
+    </div><!-- /card -->
+
+</div><!-- /page-wrap -->
+
+<footer>
+    Copyright &copy; <a href="index.html">Global Investments AG</a>. All Rights Reserved.
+</footer>
+
+<script>
+    // ── Password toggle ──
+    const pwInput   = document.getElementById('password');
+    const toggleBtn = document.getElementById('togglePw');
+    const eyeIcon   = document.getElementById('eyeIcon');
+
+    const eyeOpen = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
+    const eyeOff  = `<line x1="17.94" y1="17.94" x2="22.99" y2="23"></line><line x1="1" y1="1" x2="6" y2="6"></line><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="12" x2="12" y2="12"></line>`;
+
+    toggleBtn.addEventListener('click', () => {
+        const isText = pwInput.type === 'text';
+        pwInput.type = isText ? 'password' : 'text';
+        eyeIcon.innerHTML = isText ? eyeOpen : eyeOff;
+    });
+
+    // ── Form validation ──
+    const form          = document.getElementById('signinForm');
+    const emailInput    = document.getElementById('email');
+    const emailError    = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+
+    function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+    emailInput.addEventListener('input', () => {
+        const ok = validateEmail(emailInput.value.trim());
+        emailInput.classList.toggle('invalid', !ok && emailInput.value.length > 0);
+        emailError.style.display = (!ok && emailInput.value.length > 0) ? 'block' : 'none';
+    });
+
+    pwInput.addEventListener('input', () => {
+        const ok = pwInput.value.length > 0;
+        pwInput.classList.toggle('invalid', !ok);
+        passwordError.style.display = ok ? 'none' : 'block';
+    });
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let valid = true;
+
+        if (!validateEmail(emailInput.value.trim())) {
+            emailInput.classList.add('invalid');
+            emailError.style.display = 'block';
+            valid = false;
+        }
+        if (!pwInput.value.length) {
+            pwInput.classList.add('invalid');
+            passwordError.style.display = 'block';
+            valid = false;
+        }
+
+        if (valid) {
+            // Redirect to the actual accounts portal
+            window.location.href = 'https://globalinvestmentsaccounts.com/';
+        }
+    });
+
+    // Dark mode toggle
+    const themeToggleBtn = document.getElementById('themeToggleSignin');
+    const themeIconSvg = document.getElementById('themeIconSignin');
+    const iconMoon = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+    const iconSun = `<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>`;
+    
+    if (document.documentElement.classList.contains('dark')) {
+        themeIconSvg.innerHTML = iconSun;
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        const isDark = document.documentElement.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        themeIconSvg.innerHTML = isDark ? iconSun : iconMoon;
+    });
+</script>
+
+</body>
+</html>
